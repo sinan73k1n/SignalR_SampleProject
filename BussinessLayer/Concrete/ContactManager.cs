@@ -5,38 +5,38 @@ using EntityLayer.Entities;
 
 namespace BussinessLayer.Concrete
 {
-    public class AboutManager : IAboutService
+    public class ContactManager : IContactService
     {
-        private readonly IAboutDal _aboutDal;
+        private readonly IContactDal _contactDal;
 
-        public AboutManager(IAboutDal aboutDal)
+        public ContactManager(IContactDal contactDal)
         {
-            _aboutDal = aboutDal;
+            _contactDal = contactDal;
         }
 
-        public void TAdd(Category entity)
+        public void TAdd(Contact entity)
         {
-            _aboutDal.Add(entity);
+            _contactDal.Add(entity);
         }
 
-        public void TDelete(Category entity)
+        public void TDelete(Contact entity)
         {
-            _aboutDal.Delete(entity);
+            _contactDal.Delete(entity);
         }
 
-        public Category TGetByID(int id)
+        public Contact TGetByID(int id)
         {
-            return _aboutDal.GetByID(id);
+            return _contactDal.GetByID(id);
         }
 
-        public List<Category> TGetListAll()
+        public List<Contact> TGetListAll()
         {
-            return _aboutDal.GetListAll();
+            return _contactDal.GetListAll();
         }
 
-        public void TUpdate(Category entity)
+        public void TUpdate(Contact entity)
         {
-            _aboutDal.Update(entity);
+            _contactDal.Update(entity);
         }
     }
 }
