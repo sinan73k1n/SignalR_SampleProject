@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BussinessLayer.Abstract;
+using DataAccessLayer.Concrete;
 using DtoLayer.AboutDto;
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +33,23 @@ namespace API.Controllers
             var val = _mapper.Map<List<ResultProductDto>>(_productService.TGetListAll());
             return Ok(val);
         }
+        [HttpGet("GetProductListWithCategory")]
+        public IActionResult GetProductListWithCategory()
+        {
+            var context = new Context();
+            var val = context.Products.Include(x => x.Category).Select(y => new ResultProductWithCategoryDto
+            {
+                CategoryName = y.Category == null ? "Değer Yok" : y.Category.Name,
+                Name = y.Name,
+                Description = y.Description,
+                ID_Product = y.ID_Product,
+                ImageURL = y.ImageURL,
+                Price = y.Price,
+                Status = y.Status
 
+            });
+            return Ok(val.ToList());
+        }
         [HttpPost]
         public IActionResult CreateProduct(CreateProductDto createProductDto)
         {

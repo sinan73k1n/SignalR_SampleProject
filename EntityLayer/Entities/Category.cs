@@ -9,6 +9,7 @@ namespace EntityLayer.Entities
         public int ID_Category { get; set; }
 		public string? Name { get; set; }
 		public bool Status { get; set; }
-    }
+		public List<Product>? Products { get; set; }
+	}
 }
 

@@ -12,6 +12,8 @@ namespace EntityLayer.Entities
 		public decimal Price { get; set; }
 		public string? ImageURL { get; set; }
 		public bool Status { get; set; }
+		public int ID_Category { get; set; }
+		public Category? Category { get; set; }
 	}
 }
 

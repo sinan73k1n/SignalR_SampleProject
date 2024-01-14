@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BussinessLayer.Abstract;
+using DtoLayer.AboutDto;
+using EntityLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,39 +13,69 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    public class SocialMediaController : Controller
+    [ApiController]
+    public class SocialMediaController : ControllerBase
     {
-        // GET: api/values
+        private readonly ISocialMediaService  _socialMediaService;
+        private readonly IMapper _mapper;
+
+        public SocialMediaController(ISocialMediaService socialMediaService, IMapper mapper)
+        {
+            _socialMediaService = socialMediaService;
+            _mapper = mapper;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult SocialMediaList()
         {
-            return new string[] { "value1", "value2" };
+            var val = _mapper.Map<List<ResultDiscountDto>>(_socialMediaService.TGetListAll());
+            return Ok(val);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult CreateSocialMedia(CreateSocialMediaDto  createSocialMediaDto)
         {
+            var val = new SocialMedia()
+            {
+                Icon = createSocialMediaDto.Icon,
+                Title = createSocialMediaDto.Title,
+                URL = createSocialMediaDto.URL
+            };
+            _socialMediaService.TAdd(val);
+            return Ok("Sosyal Medya Eklendi!");
+        }
+        [HttpPut]
+        public IActionResult UpdateDiscount(UpdateSocialMediaDto  updateSocialMediaDto)
+        {
+            var val = new SocialMedia()
+            {
+                Icon = updateSocialMediaDto.Icon,
+                Title = updateSocialMediaDto.Title,
+                URL = updateSocialMediaDto.URL,
+                ID_SocialMedia = updateSocialMediaDto.ID_SocialMedia
+
+            };
+            _socialMediaService.TUpdate(val);
+
+            return Ok("Sosyal Medya Güncellendi!");
+
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpDelete]
+        public IActionResult DeleteSocialMedia(int id)
         {
+            var val = _socialMediaService.TGetByID(id);
+            _socialMediaService.TDelete(val);
+            return Ok("Sosyal Medya Silindi!");
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet("GetSocialMedia")]
+        public IActionResult GetSocialMedia(int id)
         {
+            var val = _socialMediaService.TGetByID(id);
+            return Ok(val);
         }
     }
 }
+
 
